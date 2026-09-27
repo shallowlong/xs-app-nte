@@ -1,0 +1,25 @@
+{
+  "name": "xs-app-nte",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "check:spec": "node ci/check-spec-refs.cjs",
+    "check:skill": "node ci/check-skill-sync.cjs",
+    "check:deps": "node ci/check-require-decls.cjs",
+    "check:kb": "python ci/check-knowledge-facts.py",
+    "check:commit": "node ci/check-commit-msg.cjs"
+  },
+  "dependencies": {
+    "pinia": "^4.0.3",
+    "vue": "^3.5.42",
+    "vue-router": "^5.3.1"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^6.0.8",
+    "vite": "^8.3.0"
+  }
+}
