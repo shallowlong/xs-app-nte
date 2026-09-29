@@ -14,9 +14,11 @@ import { COPYRIGHT } from "@/data/copyright";
       © {{ COPYRIGHT.years }}
       <strong>{{ COPYRIGHT.displayName }}</strong>
       <span class="sep">·</span>
-      {{ COPYRIGHT.license }} License
+      <a :href="COPYRIGHT.homepage" target="_blank" rel="noopener noreferrer">
+        {{ COPYRIGHT.homepage }}
+      </a>
       <span class="sep">·</span>
-      <a :href="`mailto:${COPYRIGHT.email}`">{{ COPYRIGHT.email }}</a>
+      {{ COPYRIGHT.license }} License
     </p>
 
     <p class="disclaimer">
