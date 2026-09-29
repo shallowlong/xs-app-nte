@@ -192,10 +192,10 @@
 
 ```
 MIT License
-Copyright (c) 2025-2026 XISHU (shallowlong@gmail.com)
+Copyright (c) 2025-2026 XISHU (邮箱见 LICENSE)
 ```
 ```json
-"author": "XISHU <shallowlong@gmail.com>",
+"author": "XISHU <邮箱见 LICENSE>",
 "license": "MIT"
 ```
 
@@ -203,8 +203,8 @@ Copyright (c) 2025-2026 XISHU (shallowlong@gmail.com)
 
 | 文件 | 内容 |
 |------|------|
-| `LICENSE`（新增） | MIT 全文，版权行与 commons 逐字一致：`Copyright (c) 2025-2026 XISHU (shallowlong@gmail.com)` |
-| `package.json` | 新增 `"author": "XISHU <shallowlong@gmail.com>"` 与 `"license": "MIT"` |
+| `LICENSE`（新增） | MIT 全文，版权行与 commons 逐字一致：`Copyright (c) 2025-2026 XISHU (邮箱见 LICENSE)` |
+| `package.json` | 新增 `"author": "XISHU <邮箱见 LICENSE>"` 与 `"license": "MIT"` |
 | `src/data/copyright.js`（新增） | 版权信息的单一事实来源；区分 `displayName`（**奚叔2099**，对外展示）与 `holder`（XISHU，法律文本） |
 | `src/components/AppFooter.vue`（新增） | 页脚：© 年份 + 展示名 + 许可证 + 邮箱，附「非官方 / 无关联 / 非侵入式」免责声明 |
 | `src/components/AppShell.vue` | 在 `<main>` 内容之后挂载 `<AppFooter />`，保证任意路由都位于页面最下方 |
@@ -221,17 +221,17 @@ Copyright (c) 2025-2026 XISHU (shallowlong@gmail.com)
 | 项 | 状态 | 证据 |
 |----|------|------|
 | 构建 | ✅ | `npm run build` → `✓ built in 1.14s` |
-| Edge 无头（打卡页） | ✅ | `奚叔2099` ×1、`2025-2026` ×1、`MIT License` ×1、`shallowlong@gmail.com` ×2（href + 文本）、`app-footer` ×1、免责声明 ×1 |
+| Edge 无头（打卡页） | ✅ | `奚叔2099` ×1、`2025-2026` ×1、`MIT License` ×1、`邮箱见 LICENSE` ×2（href + 文本）、`app-footer` ×1、免责声明 ×1 |
 | Edge 无头（历史页） | ✅ | 同上，页脚在历史页同样位于最下方 |
 | 法律名称不外泄 | ✅ | 两页 DOM 中 `XISHU` 出现次数均为 **0** |
-| `package.json` 字段 | ✅ | `author = XISHU <shallowlong@gmail.com>`、`license = MIT` |
+| `package.json` 字段 | ✅ | `author = XISHU <邮箱见 LICENSE>`、`license = MIT` |
 | `LICENSE` | ✅ | 首行 `MIT License`，版权行与 commons 一致 |
 | `check:kb` / `check:spec` / `check:skill` / `check:deps` | ✅ | 全部通过 |
 | 自动提交 | ☐ 未做 | 按 §5 提交门禁，改动留工作区 |
 
 ## 待用户确认
 
-- 页脚目前以 `mailto:` 链接展示邮箱 `shallowlong@gmail.com`。若该仓库可能公开部署且不希望暴露邮箱，告知即可移除（`src/data/copyright.js` 一处改动）。
+- 页脚原先以 `mailto:` 链接展示邮箱 `邮箱见 LICENSE` —— **已于第七轮解决**：邮箱从页面移除，改为展示主页链接 `https://xishu2099.top`。
 - 版权年份沿用了 commons 的 `2025-2026`；若本项目应从 2026 起算，改 `src/data/copyright.js` 的 `years` 并同步 `LICENSE` / `README.md`。
 
 ---
@@ -348,3 +348,45 @@ npm version minor
 
 - `favicon-512x512.png` 体积 602 KB，属正常范围（PWA 安装时才按需加载，不进入首屏关键路径，不影响构建产物主包体积）。
 - 未引入 service worker，因此 manifest 只是声明图标与主题色，不构成完整 PWA（浏览器不会弹出安装提示，也无副作用）。
+
+---
+
+# 第七轮改动（2026-09-29）：页脚主页链接、移除邮箱
+
+## 需求
+
+页脚「奚叔2099」旁展示主页跳转 `https://xishu2099.top`，并去掉邮箱。
+
+## 改动
+
+| 文件 | 内容 |
+|------|------|
+| `src/data/copyright.js` | 移除 `email` 字段；新增 `homepage`（`https://xishu2099.top`）；注释补充「联系方式属法律署名，不在页面展示」 |
+| `src/components/AppFooter.vue` | `mailto:` 链接替换为主页外链（`target="_blank"` + `rel="noopener noreferrer"`） |
+| `src/styles/app.css` | 页脚链接悬停下划线、允许长 URL 换行 |
+| `AGENTS.md` §9 | 版权约束改为「不要硬编码名称 / 年份 / 主页地址」，并明确邮箱不得出现在页面上 |
+| `.codebuddy/rules/AGENTS.md` | 同步上述约束 |
+
+页脚最终展示：`© 2025-2026 奚叔2099 · https://xishu2099.top · MIT License`
+
+## 邮箱的保留范围（明确边界）
+
+移除后邮箱在**页面与 `src/`、`index.html`、`public/` 中零出现**；仍保留在下列法律 / 元数据位置，与参考项目 `commons` 的署名保持一致：
+
+| 位置 | 用途 |
+|------|------|
+| `LICENSE` | 法律署名：`Copyright (c) 2025-2026 XISHU (邮箱见 LICENSE)` |
+| `package.json` | `author` 字段（npm 元数据） |
+| `README.md` | 「版权与许可」章节的法律署名行 |
+
+## 第七轮验证
+
+| 项 | 状态 | 证据 |
+|----|------|------|
+| 构建 | ✅ | `npm run build` → `✓ built in 2.52s` |
+| 源码无邮箱残留 | ✅ | `grep -rn "shallowlong\|mailto" src/ index.html public/` → **0 命中** |
+| 主页链接渲染（打卡页） | ✅ | Edge 无头：`https://xishu2099.top` ×2（href + 文本）、`rel="noopener noreferrer"` ×1 |
+| 主页链接渲染（历史页） | ✅ | 同上，两页一致 |
+| 邮箱不在页面上 | ✅ | 两页 DOM 中 `shallowlong` / `mailto` 命中数均为 **0** |
+| 其他页脚信息未受影响 | ✅ | `奚叔2099` ×1、`MIT License` ×1、版本徽标仍在 |
+| 自动提交 | ☐ 未做 | 按 §7 不自动提交；本轮改动未纳入上一轮的推送 |
