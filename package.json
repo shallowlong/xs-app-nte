@@ -1,8 +1,10 @@
 {
   "name": "xs-app-nte",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
   "type": "module",
+  "author": "XISHU <shallowlong@gmail.com>",
+  "license": "MIT",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
@@ -10,10 +12,14 @@
     "check:spec": "node ci/check-spec-refs.cjs",
     "check:skill": "node ci/check-skill-sync.cjs",
     "check:deps": "node ci/check-require-decls.cjs",
-    "check:kb": "python ci/check-knowledge-facts.py",
-    "check:commit": "node ci/check-commit-msg.cjs"
+    "check:kb": "python -X utf8 ci/check-knowledge-facts.py",
+    "check:commit": "node ci/check-commit-msg.cjs",
+    "verify": "npm run build && npm run check:spec && npm run check:kb && npm run check:skill && npm run check:deps",
+    "preversion": "npm run verify",
+    "postversion": "node ci/notify-version.cjs"
   },
   "dependencies": {
+    "element-plus": "^2.14.6",
     "pinia": "^4.0.3",
     "vue": "^3.5.42",
     "vue-router": "^5.3.1"
