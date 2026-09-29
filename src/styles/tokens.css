@@ -1,0 +1,100 @@
+/**
+ * 设计令牌 —— 取自参考表《异环 NTE · 方斯赚钱打卡表》。
+ * 以「方斯金」为主色；性价比分级 a/b/c 分别对应金 / 银灰 / 浅灰。
+ */
+:root {
+  color-scheme: light;
+
+  /* 文本 */
+  --ink: #1a1c20;
+  --ink-2: #4a4f57;
+  --ink-3: #8b919b;
+
+  /* 线条与底色 */
+  --line: #e3e6ea;
+  --line-2: #f0f2f5;
+  --bg: #f7f8fa;
+  --card: #ffffff;
+  --card-sub: #fcfcfd;
+  --card-done: #fbfdfb;
+
+  /* 主色：方斯金 */
+  --gold: #b8860b;
+  --gold-soft: #e0b93c;
+  --gold-bg: #fdf6e3;
+  --gold-line: #e6d5a8;
+
+  /* 语义色 */
+  --green: #2e7d32;
+  --green-bg: #eef7ee;
+  --blue: #1565c0;
+  --blue-bg: #eef4fc;
+  --red: #c62828;
+  --red-bg: #fdeeee;
+  --purple: #6a3d9a;
+  --purple-bg: #f4effa;
+  --teal: #00695c;
+  --teal-bg: #e6f4f1;
+
+  /* 尺度 */
+  --radius-s: 7px;
+  --radius-m: 12px;
+  --radius-l: 14px;
+  --shadow-s: 0 1px 2px rgba(16, 24, 40, 0.04);
+  --shadow-m: 0 8px 24px -12px rgba(16, 24, 40, 0.22);
+
+  /* 字体 */
+  --font-sans: "Microsoft YaHei", "PingFang SC", "Hiragino Sans GB", -apple-system,
+    BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-num: ui-monospace, "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font: 14px/1.6 var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  margin: 0;
+  line-height: 1.35;
+  font-weight: 700;
+}
+
+p {
+  margin: 0;
+}
+
+a {
+  color: var(--blue);
+}
+
+button,
+input,
+select {
+  font: inherit;
+  color: inherit;
+}
+
+:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 2px;
+  border-radius: 4px;
+}

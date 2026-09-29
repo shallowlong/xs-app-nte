@@ -1,0 +1,23 @@
+{
+  "name": "异环 NTE · 方斯赚钱打卡表",
+  "short_name": "方斯打卡表",
+  "description": "《异环》（Neverness to Everness）方斯收益整理与打卡自查工具（非官方）",
+  "lang": "zh-CN",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#b8860b",
+  "icons": [
+    {
+      "src": "/favicon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/favicon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
