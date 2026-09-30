@@ -1,27 +1,18 @@
 # AGENTS.md — xs-app-nte AI 协作规范
 
-> 本文件是本仓库的 **AI 协作唯一权威规范**，供所有 AI 编码工具（Codex、Claude Code、Cursor、Copilot、Trae 等）与开发者共同遵守；`CLAUDE.md` 与 `.github/copilot-instructions.md` 是兼容入口，冲突以本文件为准。
-> `$nte-dev`（执行清单，内部文件 `SKILL.md`；Codex 在 `.agents/skills/`、Claude Code 在 `.claude/skills/`，两份逐字一致，CI 强制同步）是本流程的**执行清单**——它固化「方案→开发→验证→提交→发版」的步骤与完成条件，**不是**「项目用到的各种 skills 集合**。涉及开发、验证或发版时先调用它，其他环境直接按本文件门禁执行。
+> 本仓库 AI 协作唯一权威规范，所有 agent 共同遵守；冲突以本文件为准。执行清单见 `SKILL.md`（`.agents/skills/` 与 `.claude/skills/` 双副本逐字一致，CI 强制同步）。
 
-> **使用前请替换**：`xs-app-nte`、`nte-dev`（执行清单名，如 `xs-api-dev`）、技术栈相关段落、目录映射表、验证命令。本文件模板来自 `ai-dev-conventions-scaffold`。
+## 0. 需求确认门禁（最高优先级）
 
-## 0. 第零准则：需求确认门禁（最高优先级）
+动手写代码前，先与用户就目标达成共识。
 
-> 本门禁解决「一句话需求直接开干、结果与预期不符」的问题。任何开发、改动、修复任务，**在动手写代码之前必须先与用户就目标达成共识**。
+**用最简清单澄清（不凭空假设）：**
+1. 目标与验收标准（做成什么样算完成）
+2. 范围边界（只改 A 还是连带 B）
+3. 约束与偏好（现有规范 / 兼容性 / 不动的文件）
+4. 复用优先（先查 §2/§3 可复用资源）
 
-**触发**：用户提出需求/任务（无论多简短）时即进入本门禁，而非直接进入开发。
-
-**必须确认清楚的事（用最少的问题清单向用户澄清，不要凭空假设）：**
-1. **目标与验收标准**：做成什么样算完成？可观测的结果是什么？（如「页面能显示 X」「接口返回 Y」）
-2. **范围边界**：只改 A，还是连带 B 也要动？是否涉及破坏性变更？
-3. **约束与偏好**：有无必须遵循的现有规范、性能/兼容性/样式约束、不希望动的文件？
-4. **复用优先**：在动代码前，先按 §2/§3 查「有没有可复用的配置/组件/helper」，避免重复造轮子——这点也要在确认时一并告诉用户。
-
-**执行方式**：
-- 用一份**简洁的目标确认清单**（不要长篇大论）向用户复述理解，并明确列出「我将要做 / 我不会做」。
-- **用户明确确认（说 OK / 可以 / 同意 或等价表述）后，才进入 §5 开发流程**。
-- 若需求已足够明确（如明确的 bug 复现步骤 + 期望行为），可缩短确认，但仍须复述验收标准并等确认。
-- 禁止在用户未确认目标前创建/修改业务代码或提交。
+**执行：** 复述「我将要做 / 我不会做」→ 用户确认 OK 后才开发。需求已明确可缩短确认，但仍须复述验收标准并等确认。
 
 ## 1. 仓库职责与协作边界
 
@@ -60,13 +51,10 @@
 
 ## 3. 知识库与文档归档
 
-> 可选但强烈建议：为 AI 贡献者维护一份「以代码为唯一事实来源」的知识库。
-
-- 知识库目录：`docs/knowledge/`，按主题域组织，入口 `docs/knowledge/README.md`
-- 维护原则：**知识库与代码不一致时以代码为准**，发现不一致时修正知识库
-- 硬事实核查：改动知识库后运行核查脚本（见 `ci/check-knowledge-facts.py` 或你项目的等价物）
-- 设计前置检查：动代码前先查「有没有可复用的配置/令牌/helper/组件」，避免重复造轮子
-- 方案文档：`docs/designs/{YYYY-MM-DD}-{功能简称}/`（`spec.md` / `plan.md` / `checklist.md`）
+- 目录 `docs/knowledge/`，入口 `docs/knowledge/README.md` 为索引；**默认只读索引，按需读具体文件，不全文加载**。
+- 知识库与代码不一致时以代码为准；改动知识库后跑事实核查（`ci/check-knowledge-facts.py`）。
+- 动代码前先查可复用资源（配置/令牌/helper/组件），避免重复造轮子。
+- 方案文档 `docs/designs/{YYYY-MM-DD}-{功能简称}/`（`spec.md` / `plan.md` / `checklist.md`）。
 
 ## 4. 编码规范
 
@@ -101,17 +89,6 @@
 - **覆盖 Element 默认样式**时集中写在 `src/styles/app.css` 并注释原因；禁止在业务组件中散落 `!important`（`:deep()` 仅用于局部尺寸微调）。
 - **新增运行时依赖**（含按需引入插件如 `unplugin-vue-components`）前必须先与用户确认，见 §9。
 
-```js
-// 示例：组合式函数
-import { ref, computed } from "vue";
-
-export function useTasks() {
-  const list = ref([]);
-  const count = computed(() => list.value.length);
-  return { list, count };
-}
-```
-
 ## 5. 工作流程
 
 流程总览：**方案 → 开发 → 验证 → 提交 → 发版**。任何任务开始前，必须先满足 **§0 需求确认门禁**（与用户就目标/验收标准达成共识后才动手）。涉及开发、验证或发版时，先调用 `$nte-dev` skill，按其中的执行顺序与完成条件推进；其他环境按下述门禁执行。
@@ -136,6 +113,7 @@ export function useTasks() {
 | `npm run check:deps` | 幽灵依赖检查 |
 | `npm run check:skill` | Skill 双副本同步；修复用 `node ci/check-skill-sync.cjs --sync` |
 | `npm run check:commit` | 提交信息规范检查 |
+| `npm run check:budget` | 文档 token 预算（AGENTS/SKILL/知识库行数上限） |
 
 > ⚠️ 本仓库**没有**聚合的 `npm run check`，也**未接入单测框架**（无 jest / vitest）。新增纯函数请先用 `node` 直接调用验证（如 `node --input-type=module -e "..."`），如需引入测试依赖须先与用户确认。
 
@@ -161,19 +139,7 @@ export function useTasks() {
 
 ## 7. Git 规范
 
-使用 Conventional Commits：`<type>(<scope>): <description>`
-
-| Type | 说明 |
-|------|------|
-| `feat` | 新功能 |
-| `fix` | Bug 修复 |
-| `refactor` | 重构 |
-| `perf` | 性能优化 |
-| `style` | 样式修改 |
-| `docs` | 文档更新 |
-| `chore` | 构建/依赖等杂项 |
-| `content` | 内容维护 |
-| `release` | 发版提交 |
+Conventional Commits：`<type>(<scope>): <description>`。type 白名单以 `ci/check-commit-msg.cjs` 为准。
 
 - 一次提交对应一个需求点；逻辑相似可合并
 - 合并代码时把 PR 标题改为 Conventional Commits 格式，不保留默认 `Merge ...` 标题
@@ -264,6 +230,4 @@ EDGE="/c/Program Files (x86)/Microsoft/Edge/Application/msedge.exe"
 ---
 
 <!-- PATH-CHECK: -->
-<!-- 上面一行用于 ci/check-spec-refs.cjs 的路径存在性检查：列出本项目真实存在的目录前缀（空格分隔），
-     脚本会校验这些目录下的反引号路径是否真实存在。默认留空（不检查），
-     待你填好 §2 目录映射后，把对应前缀填进来即可启用，例如：src/ lib/ scripts/ docs/ -->
+<!-- 路径存在性检查：反引号路径命中上述前缀时必须真实存在。 -->

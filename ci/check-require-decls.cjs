@@ -15,7 +15,6 @@
 
 const fs = require('fs');
 const path = require('path');
-const { execSync } = require('child_process');
 
 const ROOT = path.join(__dirname, '..');
 const args = process.argv.slice(2);
@@ -34,11 +33,17 @@ function getDeps() {
 
 function findTestFiles(dir) {
   if (!fs.existsSync(dir)) return [];
-  return execSync(`dir /s /b "${dir}"`, { shell: true })
-    .toString()
-    .split(/\r?\n/)
-    .filter((f) => /\.(js|ts|mjs|cjs)$/.test(f.trim()))
-    .map((f) => f.trim());
+  const out = [];
+  function walk(d) {
+    for (const name of fs.readdirSync(d)) {
+      const full = path.join(d, name);
+      const st = fs.statSync(full);
+      if (st.isDirectory()) walk(full);
+      else if (/\.(js|ts|mjs|cjs)$/.test(name)) out.push(full);
+    }
+  }
+  walk(dir);
+  return out;
 }
 
 function main() {

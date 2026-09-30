@@ -14,7 +14,8 @@
     "check:deps": "node ci/check-require-decls.cjs",
     "check:kb": "python -X utf8 ci/check-knowledge-facts.py",
     "check:commit": "node ci/check-commit-msg.cjs",
-    "verify": "npm run build && npm run check:spec && npm run check:kb && npm run check:skill && npm run check:deps",
+    "check:budget": "node ci/check-doc-budget.cjs --agents=270 --skill=80",
+    "verify": "npm run build && npm run check:spec && npm run check:kb && npm run check:skill && npm run check:deps && npm run check:budget",
     "preversion": "npm run verify",
     "postversion": "node ci/notify-version.cjs"
   },
